@@ -5,7 +5,7 @@ import './resposta.dart';
 class Questionario extends StatelessWidget {
   final List<Map<String, Object>> perguntas;
   final int perguntaSelecionada;
-  final void Function() quandoResponder;
+  final void Function(int) quandoResponder;
 
   Questionario({
     @required this.perguntas,
@@ -25,9 +25,14 @@ class Questionario extends StatelessWidget {
     return Column(
       children: [
         Questao(perguntas[perguntaSelecionada]['texto']),
-        ...respostas
-          .map((resp) => Resposta(resp['texto'], quandoResponder))
-          .toList(),
+        ...respostas.map((resp) {
+          return Resposta(
+            resp['texto'],
+            // () => usado pq estamos passando uma funcao como parametro
+            // e nao acionando a funcao,
+            () => quandoResponder(resp['pontuacao']),
+          );
+        }).toList(),
         // ... (spread) listar todos os elementos de interable
       ],
     );

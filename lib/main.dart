@@ -9,43 +9,54 @@ main() {
 class _PerguntaAppState extends State<PerguntaApp> {
   // cada compornente statefull, precisa criar um class para gerenciar seu estado
   var _perguntaSelecionada = 0;
+  var _pontuacaoTotal = 0;
   final _perguntas = const [
     {
       'texto': 'Qual a sua cor favorita?',
       'resposta': [
-        {'texto': 'Preto', 'nota': 10},
-        {'texto': 'Vermelho', 'nota': 5},
-        {'texto': 'Branco', 'nota': 3},
-        {'texto': 'Azul', 'nota': 1},
+        {'texto': 'Preto', 'pontuacao': 10},
+        {'texto': 'Vermelho', 'pontuacao': 5},
+        {'texto': 'Branco', 'pontuacao': 3},
+        {'texto': 'Azul', 'pontuacao': 1},
       ],
     },
     {
       'texto': 'Qual é o seu animal favorito?',
       'resposta': [
-        {'texto': 'Coelho', 'nota': 10},
-        {'texto': 'Jumento', 'nota': 5},
-        {'texto': 'cabra', 'nota': 3,},
-        {'texto': 'Cadelo', 'nota': 1},
+        {'texto': 'Coelho', 'pontuacao': 10},
+        {'texto': 'Jumento', 'pontuacao': 5},
+        {
+          'texto': 'cabra',
+          'pontuacao': 3,
+        },
+        {'texto': 'Cadelo', 'pontuacao': 1},
       ],
     },
     {
       'texto': 'Qual  o seu instrutor favorito?',
       'resposta': [
-        {'texto': 'Maria', 'nota': 10},
-        {'texto': 'Cagao', 'nota': 5},
-        {'texto': 'Bundao', 'nota': 3},
-        {'texto': 'bostinha', 'nota': 1},
+        {'texto': 'Maria', 'pontuacao': 10},
+        {'texto': 'Cagao', 'pontuacao': 5},
+        {'texto': 'Bundao', 'pontuacao': 3},
+        {'texto': 'bostinha', 'pontuacao': 1},
       ],
     }
   ];
 
-  void _responder() {
+  void _responder(int pontuacao) {
     if (temPerguntaSelecionada) {
       setState(() {
         _perguntaSelecionada++;
+        _pontuacaoTotal += pontuacao;
       });
-      print(_perguntaSelecionada);
     }
+  }
+
+  void _reiniciarQuestionario() {
+    setState(() {
+      _perguntaSelecionada = 0;
+      _pontuacaoTotal = 0;
+    });
   }
 
   bool get temPerguntaSelecionada {
@@ -64,7 +75,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
                 perguntas: _perguntas,
                 perguntaSelecionada: _perguntaSelecionada,
                 quandoResponder: _responder)
-            : Resultado(),
+            : Resultado(_pontuacaoTotal, _reiniciarQuestionario),
       ),
     );
   }
